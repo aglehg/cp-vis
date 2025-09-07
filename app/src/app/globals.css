@@ -1,0 +1,35 @@
+@import "katex/dist/katex.min.css";
+
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities; 
+
+
+:root {
+  --bg: 255 255 255;
+  --fg: 17 24 39;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+      --bg: 17 24 39;
+      --fg: 243 244 246;
+    }
+
+    .dark\:text-slate-100 {
+      color: rgb(var(--color-black));
+    }
+}
+
+
+@layer base {
+  /* Ensure KaTeX uses high-contrast text matching the theme */
+  .katex, .katex .katex-html {
+    color: rgb(var(--color-black));
+  }
+}
+
+html, body { height: 100%; }
+body { background-color: rgb(var(--bg)); color: rgb(var(--fg)); }
