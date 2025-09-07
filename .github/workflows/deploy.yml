@@ -35,6 +35,7 @@ jobs:
 
       # Deploy the static export (app/out) to your shared hosting via FTP
       - name: FTP Deploy
+        if: ${{ env.SKIP_FTP != 'true' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
