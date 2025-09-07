@@ -1,0 +1,52 @@
+name: Build and Deploy (FTP)
+
+on:
+  push:
+    branches:
+      - master
+      # - main  # uncomment if you use main
+
+permissions:
+  contents: read
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (static export)
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+        run: npm run build
+
+      # Deploy the static export (app/out) to your shared hosting via FTP
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # protocol: ftp  # default is ftp; set a secret FTP_PROTOCOL and map it if you need ftps
+          local-dir: app/out/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}/
+          # Optional excludes
+          exclude: |
+            **/.DS_Store
+            **/.git*
+            **/node_modules/**
+

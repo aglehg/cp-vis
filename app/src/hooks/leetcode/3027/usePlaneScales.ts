@@ -15,11 +15,11 @@ export function usePlaneScales(points: Pt[], opts?: { width?: number; height?: n
   const xMax = xs.length ? Math.max(5, Math.max(...xs)) : 5;
   const yMax = ys.length ? Math.max(5, Math.max(...ys)) : 5;
 
-  const xScaleObj = useMemo(() => scaleLinear<number, number>()
+  const xScaleObj = useMemo(() => scaleLinear()
     .domain([xMin, xMax])
     .range([padding, width - padding])
     .nice(), [xMin, xMax, width, padding]);
-  const yScaleObj = useMemo(() => scaleLinear<number, number>()
+  const yScaleObj = useMemo(() => scaleLinear()
     .domain([yMin, yMax])
     .range([height - padding, padding])
     .nice(), [yMin, yMax, height, padding]);

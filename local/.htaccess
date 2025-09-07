@@ -1,0 +1,12 @@
+# Disable content negotiation that can interfere with clean URLs
+Options -MultiViews
+
+# Serve index.html by default in directories
+DirectoryIndex index.html
+
+RewriteEngine On
+
+# Redirect directory requests missing a trailing slash to include it
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.+[^/])$ $1/ [R=301,L]
+

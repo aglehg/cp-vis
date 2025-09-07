@@ -1,0 +1,10 @@
+{
+  "name": "cp-vis-static-server",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Static file server for exported Next.js site (no deps)",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
+

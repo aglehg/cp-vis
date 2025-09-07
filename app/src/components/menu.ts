@@ -1,8 +1,7 @@
 export interface NavItem { title: string; href: string }
 export interface NavCategory { label: string; items: NavItem[] }
 
-export const NAV: NavCategory[] = [
-
+export const NAV: NavCategory[] = [  
   {
     label: 'Leetcode',
     items: [
