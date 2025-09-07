@@ -137,3 +137,6 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+.DS_Store
+app/next-env.d.ts
+app/package-lock.json
