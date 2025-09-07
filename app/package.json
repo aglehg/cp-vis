@@ -17,6 +17,7 @@
     "react-dom": "19.1.0"
   },
   "devDependencies": {
+    "@next/mdx": "^15.0.0",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/d3-array": "^3.2.1",
@@ -26,6 +27,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
+    "rehype-katex": "^7",
+    "remark-math": "^6",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
