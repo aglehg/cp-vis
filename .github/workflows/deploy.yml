@@ -22,9 +22,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: npm
-          # Use package.json for caching since package-lock.json isn't committed
-          cache-dependency-path: app/package.json
+          cache: npm 
+          cache-dependency-path: app/package-lock.json
 
       - name: Install dependencies
         run: npm ci
