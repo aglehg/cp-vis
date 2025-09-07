@@ -3,8 +3,7 @@ name: Build and Deploy (FTP)
 on:
   push:
     branches:
-      - master
-      # - main  # uncomment if you use main
+      - main  
 
 permissions:
   contents: read
