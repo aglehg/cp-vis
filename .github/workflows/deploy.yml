@@ -44,8 +44,17 @@ jobs:
           # protocol: ftp  # default is ftp; set a secret FTP_PROTOCOL and map it if you need ftps
           local-dir: app/out/
           server-dir: ${{ secrets.FTP_REMOTE_DIR }}/
+          # Deletes remote files that no longer exist locally (mirror local → remote)
+          # Controlled by secret FTP_PRUNE: set to 'true' to enable pruning
+          dangerous-clean-slate: ${{ secrets.FTP_PRUNE == 'true' }}
+          # Persist incremental state on the server for faster diffs
+          state-name: .ftp-deploy-sync-state.json
           # Optional excludes
           exclude: |
             **/.DS_Store
             **/.git*
             **/node_modules/**
+            **/*.map
+            **/*.md
+            **/README*
+            **/LICENSE*
