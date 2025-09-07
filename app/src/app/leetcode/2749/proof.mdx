@@ -1,0 +1,67 @@
+# Minimum Operations to Make the Integer Zero — Proof
+
+**Operation.** In one step pick $i \ge 0$ and do
+$$
+n \leftarrow n - \bigl(2^i + \text{num2}\bigr).
+$$
+Start at $n_0=\text{num1}$. After $k$ steps with indices $i_1,\dots,i_k$,
+$$
+n_k
+= \text{num1} - \sum_{t=1}^{k}\!\bigl(2^{i_t}+\text{num2}\bigr)
+= \text{num1} - k\,\text{num2} - \sum_{t=1}^{k} 2^{i_t}.
+$$
+Let $x := \text{num1} - k\,\text{num2}$.
+
+---
+
+## Theorem (necessary & sufficient)
+
+There exists a sequence of $k$ operations that yields $0$ if and only if
+$$
+x \ge 0 \quad\text{and}\quad \operatorname{popcount}(x) \le k \le x .
+$$
+
+### ($\Rightarrow$) Necessity 
+
+If a sequence reaches $0$, then
+$$
+0 = n_k = \text{num1} - k\,\text{num2} - \sum_{t=1}^{k} 2^{i_t}
+$$
+
+$$
+let \text{ x} = num1- *num2 
+$$
+
+$$
+\;\Rightarrow\;
+\sum_{t=1}^{k} 2^{i_t} = x .
+$$
+Hence $x \ge 0$. Also $2^{i_t}\ge 1$ for each $t$, so $k \le \sum 2^{i_t} = x$.
+Among all representations of $x$ as a sum of powers of two (with repetition),
+the fewest terms needed is $\operatorname{popcount}(x)$ (use the $1$-bits of $x$),
+so $\operatorname{popcount}(x) \le k$.
+
+### ($\Leftarrow$) Sufficiency
+
+Assume $x \ge 0$ and $\operatorname{popcount}(x) \le k \le x$.
+Take the binary expansion of $x$ (it uses $\operatorname{popcount}(x)$ powers).
+Repeatedly split a term $2^j$ into $2^{j-1}+2^{j-1}$ to increase the term count by $1$
+without changing the sum, until you have exactly $k$ terms:
+$$
+x=\sum_{t=1}^{k} 2^{j_t}.
+$$
+Applying those $k$ indices gives
+$$
+n_k=\text{num1}-k\,\text{num2}-\sum_{t=1}^{k}2^{j_t}
+=\text{num1}-k\,\text{num2}-x=0 .
+$$
+
+---
+
+## Corollaries / quick checks
+
+**C1.** If $\text{num2}>0$ and $\text{num1}\le \text{num2}$, then $x\le 0$ for all $k\ge 1$ (impossible).
+
+**C2.** If $\text{num2}<0$, then $x$ grows with $k$; still need some $k$ with $\operatorname{popcount}(x)\le k \le x$.
+
+**C3.** The minimum operations equal the smallest $k$ satisfying the condition.
