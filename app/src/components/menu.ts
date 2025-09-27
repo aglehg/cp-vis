@@ -9,4 +9,10 @@ export const NAV: NavCategory[] = [
       { title: '2749', href: '/leetcode/2749' }, 
     ],
   },
+  {
+    label:'Tools',
+    items: [
+      { title:"Andrew's convex hull", href:'/tools/andrew-convex-hull'}
+    ]
+  }
 ]

@@ -10,10 +10,7 @@ export default function Page2749() {
 
   const N1 = React.useMemo(() => BigInt(Number(num1 || 0)), [num1]);
   const N2 = React.useMemo(() => BigInt(Number(num2 || 0)), [num2]);
-  const K = React.useMemo(() => BigInt(k), [k]);
-  const S = React.useMemo(() => N1 - K * N2, [N1, N2, K]);
-  // Preview of S for next k
-  const SNextK = React.useMemo(() => S - N2, [S, N2]);
+  const S = React.useMemo(() => N1 - BigInt(k) * N2, [N1, N2, k]);
 
   // Bits ribbon helpers for S
   const absS = React.useMemo(() => (S < 0n ? -S : S), [S]);
@@ -141,22 +138,49 @@ export default function Page2749() {
               <span className="ml-2 text-xs text-slate-600">k = {k}</span>
             </div>
             <div className="mt-2 font-mono text-xs">
-              S(k) = num1 − k·num2 = {fmt(S)} ({fmtBin(S)}). Next: S(k+1) = {fmt(SNextK)}
+              S(k) = num1 − k·num2 = {fmt(S)} ({fmtBin(S)})
             </div>
           </div>
         </div>
 
         <div className="lg:col-span-2 space-y-4">
-          <div className="p-4 rounded-xl bg-white border space-y-3">
-            <div className="text-sm font-medium">Telescoping Identity (per k)</div>
-            <div className="font-mono text-sm whitespace-pre-wrap">
-              <div>num1 = {fmt(N1)}</div>
-              <div className="mt-1">= k·num2 + S(k)</div>
-              <div>= {fmt(K)}·{fmt(N2)} + {fmt(S)} ({fmtBin(S)})</div>
-              <div className="text-xs text-slate-600 mt-2">A k is valid iff S(k) ≥ 0, popcount(S(k)) ≤ k ≤ S(k).</div>
+            <div className="p-4 rounded-xl bg-white border space-y-3">
+            <div className="text-sm font-medium">Bits Ribbon for S(k)</div>
+            <div className="font-mono text-sm">
+              S = {S < 0n ? "-" : ""}{absS.toString()} (dec) = {S < 0n ? "-" : ""}0b{absS.toString(2)}
+            </div>
+            <div className="flex items-center gap-3 text-xs text-slate-600">
+              <span>popcount(S) = {popS}, k = {k}</span>
+              <label className="inline-flex items-center gap-1 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  className="rounded border"
+                  checked={showFullBits}
+                  onChange={(e) => setShowFullBits(e.target.checked)}
+                />
+                <span>Show full 0..60</span>
+              </label>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-row gap-1 overflow-x-auto py-1">
+                {ribbon.map((on, i) => (
+                  <div
+                    key={i}
+                    title={`bit ${i} (2^${i})`}
+                    className={`shrink-0 w-10 h-14 border rounded-md flex flex-col items-center justify-between px-1 ${on ? "bg-emerald-500/90 text-white border-emerald-600" : "bg-white text-slate-700"}`}
+                  >
+                    <div className="text-[10px] leading-none text-slate-600/90 w-full text-left">i={i}</div>
+                    <div className={`text-base font-semibold leading-none ${on ? "text-white" : "text-slate-900"}`}>{on ? 1 : 0}</div>
+                    <div className="text-[10px] leading-none text-slate-500">2^{i}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="text-[11px] text-slate-500">Swipe/scroll horizontally • Range: bits 0..{bitRangeMax}{showFullBits ? " (full)" : " (auto)"}</div>
             </div>
           </div>
- 
+          
+          
+    
           <div className="p-4 rounded-xl bg-white border space-y-2">
             <div className="text-sm font-medium">Feasibility for current k</div>
             <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -171,7 +195,7 @@ export default function Page2749() {
                 {feasSNonNeg && feasPcLeK && !feasKLeS && <div>Invalid: k must be ≤ S(k).</div>}
               </div>
             )}
-            <div className="font-mono text-xs text-slate-600">S(k) = num1 − k·num2 = {fmt(S)} ({fmtBin(S)}). Next S(k+1) = {fmt(SNextK)}.</div>
+            <div className="font-mono text-xs text-slate-600">S(k) = num1 − k·num2 = {fmt(S)} ({fmtBin(S)}).</div>
           </div>
 
           <div className="p-4 rounded-xl bg-white border space-y-2">
@@ -214,40 +238,7 @@ export default function Page2749() {
             )}
           </div>
 
-          <div className="p-4 rounded-xl bg-white border space-y-3">
-            <div className="text-sm font-medium">Bits Ribbon for S(k)</div>
-            <div className="font-mono text-sm">
-              S = {S < 0n ? "-" : ""}{absS.toString()} (dec) = {S < 0n ? "-" : ""}0b{absS.toString(2)}
-            </div>
-            <div className="flex items-center gap-3 text-xs text-slate-600">
-              <span>popcount(S) = {popS}, k = {k}</span>
-              <label className="inline-flex items-center gap-1 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  className="rounded border"
-                  checked={showFullBits}
-                  onChange={(e) => setShowFullBits(e.target.checked)}
-                />
-                <span>Show full 0..60</span>
-              </label>
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-row gap-1 overflow-x-auto py-1">
-                {ribbon.map((on, i) => (
-                  <div
-                    key={i}
-                    title={`bit ${i} (2^${i})`}
-                    className={`shrink-0 w-10 h-14 border rounded-md flex flex-col items-center justify-between px-1 ${on ? "bg-emerald-500/90 text-white border-emerald-600" : "bg-white text-slate-700"}`}
-                  >
-                    <div className="text-[10px] leading-none text-slate-600/90 w-full text-left">i={i}</div>
-                    <div className={`text-base font-semibold leading-none ${on ? "text-white" : "text-slate-900"}`}>{on ? 1 : 0}</div>
-                    <div className="text-[10px] leading-none text-slate-500">2^{i}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="text-[11px] text-slate-500">Swipe/scroll horizontally • Range: bits 0..{bitRangeMax}{showFullBits ? " (full)" : " (auto)"}</div>
-            </div>
-          </div>
+        
         </div>
       </div>
     </div>
